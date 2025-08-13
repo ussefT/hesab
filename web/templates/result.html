@@ -6,10 +6,41 @@ Result
 {%endblock%}
 
 {%block content%}
+
 <a href="{%url 'submit_expense' %}">Expends</a>
-<h1>result</h1>
-<p>title {{title}}</p>
-<p>amount {{amount}}</p>
-<p>date {{date}}</p>
-<p>user {{user}}</p>
+
+{%if expends %}
+<h1>All Expenses</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>User</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in expends %}
+        <tr>
+          <td>{{ item.title }}</td>
+          <td>{{ item.amount|floatformat:2 }}</td>
+          <td>
+            {# If DateTimeField: #}
+            {{ item.date|date:"Y-m-d H:i" }}
+            {# If DateField instead, use: {{ item.date|date:"Y-m-d" }} #}
+          </td>
+          <td>{{ item.user.get_full_name|default:item.user.username }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="4">No records found.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+<h1>No Expends</h1>
+{% endif %}
 {%endblock%}

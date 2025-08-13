@@ -9,7 +9,8 @@ urlpatterns=[
         views.submit_expense,name='submit_expense')
 ,
     path('submit/income/',
-         views.submit_income,name='income_expense')
+         views.submit_income,name='submit_income')
     ,
+    path('result/',views.result,name='result'),
     path('register/',views.register,name="register")
 ]

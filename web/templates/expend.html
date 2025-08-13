@@ -6,14 +6,47 @@ Expends
 
 {%block content%}
 <h1>Expends</h1>
+    <a href="{% url 'result' %}">Show Table result</a>
+ {% if success_message %}
+        <div style="color:green">{{ success_message }}</div>
+    {% endif %}
 
-<form action="POST">
+<form method="post" action="{% url 'submit_expense' %}" novalidate>
 {%csrf_token%}
-<P>title : <input type="text" name="title" required/></P>
-<P>date : <input type="datetime" name="date" required/></P>
-<P>amount : <input type="number" name="amount" required/></P>
-<P>user : <input type="checkbox" name="user"/></P>
-<button type="button">Submit : </button>
+
+<div>
+    <label for="id_title">Title:</label>
+            {{ form.title }}
+            {% for error in form.title.errors %}
+                <div style="color:red">{{ error }}</div>
+            {% endfor %}
+</div>
+
+<div>
+    <label for="id_date">Date:</label>
+            {{ form.date }}
+            {% for error in form.date.errors %}
+                <div style="color:red">{{ error }}</div>
+            {% endfor %}
+</div>
+
+<div>
+    <label for="id_amount">Amount:</label>
+            {{ form.amount }}
+            {% for error in form.amount.errors %}
+                <div style="color:red">{{ error }}</div>
+            {% endfor %}
+</div>
+
+<div>
+    <label for="id_title">User:</label>
+            {{ form.user }}
+            {% for error in form.User.errors %}
+                <div style="color:red">{{ error }}</div>
+            {% endfor %}
+</div>
+
+<button type="submit">Submit </button>
 
 </form>
 {%endblock%}
