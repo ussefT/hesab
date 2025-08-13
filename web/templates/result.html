@@ -1,0 +1,15 @@
+{% extends "main.html" %}
+
+
+{%block title%}
+Result
+{%endblock%}
+
+{%block content%}
+<a href="{%url 'submit_expense' %}">Expends</a>
+<h1>result</h1>
+<p>title {{title}}</p>
+<p>amount {{amount}}</p>
+<p>date {{date}}</p>
+<p>user {{user}}</p>
+{%endblock%}

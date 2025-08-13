@@ -8,7 +8,10 @@ class Token(models.Model):
         User,on_delete=models.CASCADE
     )
     token=models.CharField(max_length=48)
-
+    
+    def __unicode__(self):
+        return "{}_token".format(self.user)
+    
 class Expense(models.Model):
     title=models.CharField(max_length=255)
     date=models.DateTimeField()
