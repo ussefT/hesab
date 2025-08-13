@@ -1,0 +1,38 @@
+
+{% extends "main.html" %}
+
+
+{%block title%}
+Register
+{%endblock%}
+
+{%block content%}
+
+ 
+<form method="POST">
+    {% csrf_token %}
+    
+    <!-- Email field -->
+    <label for="email">Email:</label>
+    {{ form.email }}
+    {% if form.email.errors %}
+        <p style="color: red;">{{ form.email.errors|join:", " }}</p>
+    {% endif %}
+
+    <input type="button" name="code" value="code" />
+
+
+    <!-- Username field -->
+    <label for="username">Username:</label>
+    {{ form.username }}
+    {% if form.username.errors %}
+        <p style="color: red;">{{ form.username.errors|join:", " }}</p>
+    {% endif %}
+    
+    <button type="submit">Submit</button>
+</form>
+
+{% if message %}
+    <p style="color: green;">{{ message }}</p>
+{% endif %}
+{%endblock%}

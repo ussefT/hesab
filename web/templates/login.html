@@ -1,0 +1,49 @@
+{% extends "main.html" %}
+
+
+{%block title%}
+Login
+{%endblock%}
+
+{%block content%}
+<h2>Login</h2>
+    <form method="POST">
+        {% csrf_token %}
+        
+        <!-- Username Field -->
+        <label for="username">Username:</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+            <ul>
+                {% for error in form.username.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- Password Field -->
+        <label for="password">Password:</label>
+        {{ form.password }}
+        {% if form.password.errors %}
+            <ul>
+                {% for error in form.password.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- Non-field errors -->
+        {% if form.non_field_errors %}
+            <ul>
+                {% for error in form.non_field_errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        
+        <button type="submit">Login</button>
+    </form>
+
+    <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+
+{%endblock%}

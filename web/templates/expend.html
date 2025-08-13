@@ -7,7 +7,7 @@ Expends
 {%block content%}
 <h1>Expends</h1>
     <a href="{% url 'result' %}">Show Table result</a>
- {% if success_message %}
+ {% if context.message %}
         <div style="color:green">{{ success_message }}</div>
     {% endif %}
 
