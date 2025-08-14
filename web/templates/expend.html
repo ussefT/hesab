@@ -1,52 +1,55 @@
 {% extends "main.html" %}
 
-{%block title%}
+{% block title %}
 Expends
-{%endblock%}
+{% endblock %}
 
-{%block content%}
-<h1>Expends</h1>
-    <a href="{% url 'result' %}">Show Table result</a>
- {% if context.message %}
-        <div style="color:green">{{ success_message }}</div>
+{% block content %}
+<div id="expense-form-container">
+    <h1>Expenses</h1>
+    
+    <a href="{% url 'result' %}" class="result-link">Show Table Result</a>
+    
+    {% if context.message %}
+        <div class="success-message">{{ context.message }}</div>
     {% endif %}
 
-<form method="post" action="{% url 'submit_expense' %}" novalidate>
-{%csrf_token%}
-
-<div>
-    <label for="id_title">Title:</label>
+    <form method="post" action="{% url 'submit_expense' %}" novalidate>
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="id_title">Title:</label>
             {{ form.title }}
             {% for error in form.title.errors %}
-                <div style="color:red">{{ error }}</div>
+                <div class="error-message">{{ error }}</div>
             {% endfor %}
-</div>
+        </div>
 
-<div>
-    <label for="id_date">Date:</label>
+        <div class="form-group">
+            <label for="id_date">Date:</label>
             {{ form.date }}
             {% for error in form.date.errors %}
-                <div style="color:red">{{ error }}</div>
+                <div class="error-message">{{ error }}</div>
             {% endfor %}
-</div>
+        </div>
 
-<div>
-    <label for="id_amount">Amount:</label>
+        <div class="form-group">
+            <label for="id_amount">Amount:</label>
             {{ form.amount }}
             {% for error in form.amount.errors %}
-                <div style="color:red">{{ error }}</div>
+                <div class="error-message">{{ error }}</div>
             {% endfor %}
-</div>
+        </div>
 
-<div>
-    <label for="id_title">User:</label>
+        <div class="form-group">
+            <label for="id_user">User:</label>
             {{ form.user }}
-            {% for error in form.User.errors %}
-                <div style="color:red">{{ error }}</div>
+            {% for error in form.user.errors %}
+                <div class="error-message">{{ error }}</div>
             {% endfor %}
+        </div>
+
+        <button type="submit" class="submit-button">Submit Expense</button>
+    </form>
 </div>
-
-<button type="submit">Submit </button>
-
-</form>
-{%endblock%}
+{% endblock %}

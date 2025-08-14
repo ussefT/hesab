@@ -8,6 +8,7 @@ from .forms import ExpenseForm,RegisterForm,LoginForm
 import requests
 from django.conf import settings
 import random
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 # Create your views here.
@@ -19,24 +20,25 @@ def main_(req):
 @login_required
 def submit_expense(req):
     """user submit an expense"""
-    success_message = None
-    
-    if req.method == 'POST':
-        form=ExpenseForm(req.POST)
-        if form.is_valid():
-            expend=form.save(commit=False)
-            expend.user=req.user    
-            expend.save()
-            success_message = "Event saved successfully!"
-            return redirect('result')
+    success_message = ""
+    if req.user.is_authenticated:
+        if req.method == 'POST':
+            form=ExpenseForm(req.POST)
+            if form.is_valid():
+                expend=form.save(commit=False)
+                expend.user=req.user    
+                expend.save()
+                success_message = "Event saved successfully!"
+                return redirect('result')
+        else:
+            form=ExpenseForm()
+        messages.success(req,success_message)
+        return render(req,"expend.html",
+                    {
+                        "form":form,
+                    })
     else:
-        form=ExpenseForm()
-    context={'message':success_message}
-    return render(req,"expend.html",
-                  {
-                    "form":form,
-                   },context)
-
+        return redirect('login')
     # return render(req,"result.html")
 
 
@@ -59,17 +61,20 @@ def submit_income(req):
     return render(req,"expend.html",
                   {
                     "form":form,
-                   "success_message":success_message
+                   
                    })
     
 @login_required
 def result(req):
-    expends=Expense.objects.select_related("user").order_by("-date")
-    incomes=Income.objects.select_related("user").order_by("-date")
-    return render(req,
-                  "result.html",
-                  {"expends":expends,"incomes":incomes})
-
+    if req.user.is_authenticated:
+        expends=Expense.objects.select_related("user").order_by("-date")
+        incomes=Income.objects.select_related("user").order_by("-date")
+        return render(req,
+                    "result.html",
+                    {"expends":expends,"incomes":incomes})
+    else:
+        return redirect('login')
+    
 def send_verification_email(email,verification_code):
     api_url = "https://api.resend.com/emails"
     api_key = settings.RESEND_API_KEY
@@ -91,7 +96,7 @@ def random_str(length=8):
 def login(req):
     if req.method=='POST':
         form=LoginForm(req.POST)
-        if form.is_calid():
+        if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user = authenticate(req, username=username, password=password)
